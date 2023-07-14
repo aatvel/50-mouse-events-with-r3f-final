@@ -19,3 +19,8 @@ body,
     top: -200px;
     left: -30vw;    
 }
+.buttonSplineoff{
+    position: absolute;
+    top: -160px;
+    left: -30vw;   
+}

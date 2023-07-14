@@ -9,7 +9,6 @@ export type TextureAnimatorProps = {
   tilesVert: number;
   numTiles: number;
   tileDispDuration: number;
-  runAnimation: () => void;
   position: THREE.Vector3 | [number, number, number];
 } & JSX.IntrinsicElements["mesh"];
 
@@ -23,7 +22,7 @@ const TextureAnimator: React.forwardRef<THREE.Mesh, TextureAnimatorProps> = (
   const [isRunning, setIsRunning] = useState(false);
   const [aspect, setAspect] = useState<[number, number, number]>([1, 1, 1]);
   const currentTile = useRef<number>(0);
-  const timerOffset = useRef(window.performance.now());
+  const timerOffset = useRef<number>(0);
 
   const texture01 = useLoader(TextureLoader, "/flipBook/anim1_front.png");
   const texture02 = useLoader(TextureLoader, "/flipBook/anim2_front.png");
@@ -33,7 +32,6 @@ const TextureAnimator: React.forwardRef<THREE.Mesh, TextureAnimatorProps> = (
   const texture12 = useLoader(TextureLoader, "/flipBook/anim2_back.png");
   const texture13 = useLoader(TextureLoader, "/flipBook/anim3_back.png");
 
-  // const textures = [texture01, texture02, texture03];
   const textureSet = [
     [texture01, texture11],
     [texture02, texture12],
@@ -43,7 +41,6 @@ const TextureAnimator: React.forwardRef<THREE.Mesh, TextureAnimatorProps> = (
   const [randomTexture, setRandomTexture] = useState<THREE.Texture | null>(
     null
   );
-
   const [randomBackTexture, setRandomBackTexture] = useState<THREE.Texture | null>(
     null
   );
@@ -55,7 +52,6 @@ const TextureAnimator: React.forwardRef<THREE.Mesh, TextureAnimatorProps> = (
 
       randomBackTexture.wrapS = randomBackTexture.wrapT = THREE.RepeatWrapping;
       randomBackTexture.repeat.set(1 / tilesHoriz, 1 / tilesVert);
-
 
       setAspect([v.width, v.height, 1]);
     }
@@ -87,6 +83,7 @@ const TextureAnimator: React.forwardRef<THREE.Mesh, TextureAnimatorProps> = (
       }
     }
   };
+
   useFrame((state, delta) => {
     if (props.visible && isRunning) {
       runAnimation();
@@ -115,6 +112,8 @@ const TextureAnimator: React.forwardRef<THREE.Mesh, TextureAnimatorProps> = (
       setRandomTextureIndex(newRandomTextureIndex);
       setRandomTexture(textureSet[newRandomTextureIndex][0]);
       setRandomBackTexture(textureSet[newRandomTextureIndex][1]);
+    } else {
+      setIsRunning(false);
     }
   };
 

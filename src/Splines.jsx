@@ -10,6 +10,7 @@ export default function Splines() {
 
   const [currentSpline, setCurrentSpline] = useState(null);
   const [currentTexture, setCurrentTexture] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const spline01 = splines.scene.getObjectByName("Curve001");
   const spline02 = splines.scene.getObjectByName("Curve002");
@@ -57,6 +58,9 @@ export default function Splines() {
     if (currentSpline) {
       return;
     }
+    if (isAnimating) {
+      return;
+    }
 
     // Сгенерировать случайный номер сплайна (от 1 до 3)
     const randomSplineNumber = Math.floor(Math.random() * 3) + 1;
@@ -84,6 +88,7 @@ export default function Splines() {
     setCurrentSpline(selectedSpline);
     setCurrentTexture(selectedTexture);
 
+    setIsAnimating(true);
     // Показать выбранный сплайн
     if (selectedSpline) {
       selectedSpline.visible = true;
@@ -105,6 +110,21 @@ export default function Splines() {
     }
   };
 
+  const stopAnimation = () => {
+    if (currentSpline) {
+      // Stop the animation using GSAP's killTweensOf function
+      gsap.killTweensOf(currentTexture.offset);
+
+      // Hide the spline and reset the current spline and texture states
+      currentSpline.visible = false;
+      setCurrentSpline(null);
+      setCurrentTexture(null);
+
+      // Set the isAnimating state to false
+      setIsAnimating(false);
+    }
+  };
+
   useEffect(() => {
     // Скрыть сплайны при загрузке страницы
     spline01.visible = false;
@@ -115,10 +135,24 @@ export default function Splines() {
   return (
     <>
       <Html>
-        <button className="buttonSpline" onClick={startAnimation}>
-          Start Splines
-        </button>
+        <div>
+          <button
+            className="buttonSpline"
+            onClick={startAnimation}
+            disabled={isAnimating}
+          >
+            Start Splines
+          </button>
+          <button
+            className="buttonSplineoff"
+            onClick={stopAnimation}
+            disabled={!isAnimating}
+          >
+            Stop Splines
+          </button>
+        </div>
       </Html>
+
       <group ref={group}>
         <primitive object={splines.scene} scale={0.75} position-y={0} />
       </group>
