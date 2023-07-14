@@ -54,18 +54,12 @@ export default function Splines() {
   });
 
   const startAnimation = () => {
-    // Если уже выполняется анимация, прервать ее
-    if (currentSpline) {
-      return;
-    }
     if (isAnimating) {
       return;
     }
 
-    // Сгенерировать случайный номер сплайна (от 1 до 3)
     const randomSplineNumber = Math.floor(Math.random() * 3) + 1;
 
-    // Определить выбранный сплайн и его текстуру на основе случайного номера
     let selectedSpline, selectedTexture;
     switch (randomSplineNumber) {
       case 1:
@@ -84,12 +78,9 @@ export default function Splines() {
         return;
     }
 
-    // Сохранить выбранный сплайн и его текстуру в состоянии
     setCurrentSpline(selectedSpline);
     setCurrentTexture(selectedTexture);
 
-    setIsAnimating(true);
-    // Показать выбранный сплайн
     if (selectedSpline) {
       selectedSpline.visible = true;
       gsap.fromTo(
@@ -97,17 +88,18 @@ export default function Splines() {
         { x: 0.2 },
         {
           x: 2,
-          duration: 3, // Длительность анимации в секундах
+          duration: 3,
           onComplete: () => {
-            // По завершении анимации скрыть сплайн
             selectedSpline.visible = false;
-            // Сбросить состояние текущего сплайна и текстуры
             setCurrentSpline(null);
             setCurrentTexture(null);
+            setIsAnimating(false); // Set isAnimating to false after the animation completes
           },
         }
       );
     }
+
+    setIsAnimating(true);
   };
 
   const stopAnimation = () => {
