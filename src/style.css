@@ -14,6 +14,16 @@ body,
     top: -300px;
     left: -30vw;    
 }
+.buttonFlipOn{
+    position: absolute;
+    left: -30vw;    
+    top: 0vh;
+}
+.buttonFlipOff{
+    position: absolute;
+    left: -30vw;    
+    top: 5vh;
+}
 .buttonSpline{
     position: absolute;
     top: -200px;

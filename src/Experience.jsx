@@ -9,9 +9,10 @@ import {
 } from "@react-three/drei";
 
 import Korus from "./Korus";
-import TextureAnimator from "./TextureAnimator";
 import { useheadPositionStore } from "./store";
 import Splines from "./Splines";
+import FlipAnimator from "./PlainAnimator";
+import TextureAnimator from "./TextureAnimator";
 
 export default function Experience() {
   const cube = useRef();
@@ -44,6 +45,7 @@ export default function Experience() {
 
       <Korus />
       <Splines />
+      <FlipAnimator IconPosition={[2, 2, 0]} IconSize={[1.8, 1.8, 0.1]} />
 
       <TextureAnimator
         tilesHoriz={8}
@@ -52,7 +54,6 @@ export default function Experience() {
         tileDispDuration={60}
         visible={true}
         position={[posX, posY + 0.5, posZ + 0.8]}
-        positionBack={[posX, posY + 0.5, posZ - 0.8]}
       />
     </>
   );
